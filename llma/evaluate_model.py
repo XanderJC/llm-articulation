@@ -16,10 +16,10 @@ parser.add_argument(
 parser.add_argument(
     "--tasks", nargs="+", default=["french", "colour", "lowercase", "question"]
 )
-parser.add_argument("--task_description", type=bool, default=True)
+parser.add_argument("--task_description", type=bool, default=False)
 parser.add_argument("--shots", nargs="+", default=[0, 1, 2, 3, 4, 5, 6])
 parser.add_argument("--verbose", type=bool, default=True)
-parser.add_argument("--output_path", type=str, default="results.csv")
+parser.add_argument("--output_path", type=str, default="results_new.csv")
 args = parser.parse_args()
 
 print(args.tasks)
@@ -35,18 +35,18 @@ for model in args.models:
         for shot in args.shots:
 
             data = load_data(task)
-            base_prompt = prompt_builder(
-                task=task, num=shot, include_task=args.task_description
-            )
-            print("=========================================")
-            print("Using prompt:")
-            print(base_prompt)
-            print("=========================================")
+            # base_prompt = prompt_builder(
+            #    task=task, num=shot, include_task=args.task_description
+            # )
 
             outputs = []
             targets = data["target"].to_numpy()
 
             for index, row in tqdm(data.iterrows()):
+
+                base_prompt = prompt_builder(
+                    task=task, num=shot, include_task=args.task_description
+                )
 
                 prompt = base_prompt + " `" + row["input"] + "'" + "\nOutput:"
                 if args.verbose:
@@ -59,7 +59,6 @@ for model in args.models:
                     top_p=1,
                     frequency_penalty=0,
                     presence_penalty=0,
-                    stop="\n\n",
                     echo=False,
                 )
 
