@@ -1,4 +1,4 @@
-from llma import articulation_prompt_builder
+from llma import CoT_articulation_prompt_builder
 from llma.data import load_data
 from tqdm import tqdm
 import argparse
@@ -27,6 +27,7 @@ if not os.path.isfile(args.output_path):
         writer = csv.writer(f)
         writer.writerow(header)
 
+
 for model in args.models:
     for task in args.tasks:
         for shot in args.shots:
@@ -39,7 +40,7 @@ for model in args.models:
 
             for index, row in tqdm(data.iterrows()):
 
-                base_prompt = articulation_prompt_builder(task=task, num=shot)
+                base_prompt = CoT_articulation_prompt_builder(task=task, num=shot)
                 prompt = (
                     base_prompt
                     + " `"
@@ -47,6 +48,7 @@ for model in args.models:
                     + "'"
                     + "\nOutput:"
                     + str(row["target"])
+                    + "\n\n<end context 2>"
                     + "\n\nWhat is the classification rule I used to determine these outputs? Lets think it through:"
                 )
 
@@ -57,7 +59,7 @@ for model in args.models:
                     top_p=1,
                     frequency_penalty=0,
                     presence_penalty=0,
-                    max_tokens=300,
+                    max_tokens=500,
                     echo=True,
                 )
 

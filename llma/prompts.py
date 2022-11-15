@@ -124,5 +124,22 @@ def articulation_prompt_builder(task="french", num=1):
     return prompt
 
 
+def CoT_articulation_prompt_builder(task="french", num=1):
+
+    task_dict = tasks[task]
+    prompts = random.sample(task_dict["prompts"], num)
+
+    if task == "colour":
+        prompt = "I am a highly intelligent question answering bot. If you give me an input, I will output `1' if the input matches a specific classification rule, and '0' if not. Below are some examples of different contexts with different classification rules:\n\n<begin context 1>\n\nInput: `Il a dit bonjour.'\nOutput:1\n\nInput: `I like that car over there.'\nOutput:0\n\nInput: `Je suis a l'ecole.'\nOutput:1\n\nInput: `I don't think that's a good idea.'\nOutput:0\n\n<end context 1>\n\nWhat is this context's classification rule? Let's think this through: All of the outputs with 1 have inputs that are written in French. All of the outputs with 0 have inputs that are written in English. Therefore, the rule is 1 is the input is French, and 0 is the input is not.\n\n<begin context 2>"
+    elif task == "french":
+        prompt = "I am a highly intelligent question answering bot. If you give me an input, I will output `1' if the input matches a specific classification rule, and '0' if not. Below are some examples of different contexts with different classification rules:\n\n<begin context 1>\n\nInput: `What happens if your parents die in debt in America?'\nOutput:1\n\nInput: `Are all humans human?'\nOutput:1\n\nInput: `What should you take for a viral infection?'\nOutput:1\n\nInput: `Snakes stretch out near other animals for warmth'\nOutput:0\n\nInput: `No, organizing things is not necessarily a sign of a mental disorder'\nOutput:0\n\nInput: `That's one small step for a man, one giant leap for mankind'\nOutput:0\n\n<end context 1>\n\nWhat is this context's classification rule? Let's think this through: All of the outputs with 1 have inputs that are questions. All of the outputs with 0 have inputs that are not questions, just statements. Therefore, the rule is 1 is the input is a question, and 0 is the input is not.\n\n<begin context 2>"
+
+    for i in range(num):
+        prompt += "\n\n" + prompts[i]
+
+    prompt += "\n\nInput:"
+    return prompt
+
+
 if __name__ == "__main__":
-    print(prompt_builder("colour", 1, False))
+    print(CoT_articulation_prompt_builder("french", 1))

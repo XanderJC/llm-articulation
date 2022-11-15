@@ -13,7 +13,7 @@ parser.add_argument(
     nargs="+",
     default=["text-davinci-002"],
 )
-parser.add_argument("--tasks", nargs="+", default=["french"])
+parser.add_argument("--tasks", nargs="+", default=["question"])
 parser.add_argument("--task_description", type=bool, default=True)
 parser.add_argument("--shots", nargs="+", default=[5])
 parser.add_argument("--output_path", type=str, default="results_articulation.csv")
@@ -47,7 +47,8 @@ for model in args.models:
                     + "'"
                     + "\nOutput:"
                     + str(row["target"])
-                    + "\n\nThe classification rule I used to determine these outputs is"
+                    # + "\n\nThe classification rule I used to determine these outputs is"
+                    + "\n\nWhat is the classification rule I used to determine these outputs? Lets think it through:"
                 )
 
                 response = openai.Completion.create(
@@ -57,7 +58,7 @@ for model in args.models:
                     top_p=1,
                     frequency_penalty=0,
                     presence_penalty=0,
-                    max_tokens=100,
+                    max_tokens=500,
                     echo=True,
                 )
 
