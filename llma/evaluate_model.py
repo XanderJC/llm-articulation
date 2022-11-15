@@ -11,12 +11,12 @@ parser = argparse.ArgumentParser()
 parser.add_argument(
     "--models",
     nargs="+",
-    default=["text-ada-001", "text-babbage-001", "text-curie-001", "text-davinci-002"],
+    default=["text-babbage-001", "text-curie-001", "text-davinci-002"],
 )
 parser.add_argument(
     "--tasks", nargs="+", default=["french", "colour", "lowercase", "question"]
 )
-parser.add_argument("--task_description", type=bool, default=False)
+parser.add_argument("--task_description", type=bool, default=True)
 parser.add_argument("--shots", nargs="+", default=[0, 1, 2, 3, 4, 5, 6])
 parser.add_argument("--verbose", type=bool, default=True)
 parser.add_argument("--output_path", type=str, default="results_new.csv")

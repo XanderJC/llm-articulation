@@ -1,0 +1,2 @@
+model,task,shot,task description,accuracy,partially
+text-davinci-002,french,5,True,0.22807017543859648,0.17543859649122806
